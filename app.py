@@ -14,32 +14,22 @@ app = Flask(__name__)
 @app.route("/")
 def index() -> None:
     """this is the homepage route"""
-    return render_template("index.html")
-
-
-@app.route("/report")
-def report() -> None:
-    """report route, access by going to localhost:5000/report"""
     dataframe = get_df("SELECT * FROM product")
     summary = dataframe[["product_price", "product_inventory"]].describe()
-    return render_template(
-        "report.html", data=dataframe.to_html(index=False), summary=summary.to_html()
-    )
-
-
-@app.route("/chart")
-def chart():
-    """chart route, access by going to localhost:5000/chart"""
-    dataframe = get_df("SELECT product_name, product_price FROM product")
     plot = dataframe.plot(
         kind="bar",
         x="product_name",
+        y="product_price",
         xlabel="product_name",
         title="product prices",
         ylabel="product prices",
     )
-    plot_decoded = fig_to_base64(plot.figure).decode("utf-8")
-    return render_template("chart.html", plot_img=plot_decoded)
+    return render_template(
+        "index.html",
+        data=dataframe.to_html(index=False),
+        summary=summary.to_html(),
+        plot=fig_to_base64(plot.figure).decode("utf-8"),
+    )
 
 
 def get_df(query: str, db_path: str = "retail_app.db") -> pd.DataFrame:
