@@ -2,24 +2,51 @@ details {
   background-color: grey;
   border-radius: 5px;
   margin-bottom: 10px;
+  /* color: #f2f2f2; */
   * {
     padding: 10px;
   }
 }
+
+details table {
+  border-collapse: collapse;
+  th {
+    text-align: left;
+  }
+}
+
 details > :last-child {
   margin-bottom: 10px;
 }
 
 summary {
   display: block;
+  cursor: pointer;
+  color: blue;
+}
+
+summary:hover {
+  text-decoration: underline;
 }
 
 summary::after {
   float: right;
+  font-size: larger;
   content: "+";
   transition: 0.2s;
 }
 
 details[open] > summary::after {
+  font-size: larger;
+
   content: "-";
+}
+
+details[open] {
+  * {
+    background-color: beige;
+  }
+  summary {
+    background-color: initial;
+  }
 }

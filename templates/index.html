@@ -12,32 +12,46 @@
     <script>
       window.addEventListener("DOMContentLoaded", () => {
         for (const el of document.querySelectorAll("summary")) {
-          console.log(el);
           el.addEventListener("click", () => {
-            console.log("clicked");
             el.innerText = el.innerText.includes("show")
               ? el.innerText.replace("show", "hide")
               : el.innerText.replace("hide", "show");
           });
         }
+        document.getElementById("expand-all").addEventListener("click", () => {
+          for (const el of document.querySelectorAll("details")) {
+            el.hasAttribute("open")
+              ? el.removeAttribute("open")
+              : el.setAttribute("open", true);
+          }
+        });
       });
     </script>
     <title>home</title>
   </head>
   <body>
-    <details>
-      <summary>show product data</summary>
-      {{ data | safe }}
-    </details>
+    <div>
+      <a id="expand-all" href="#">expand all</a>
+    </div>
+    <br />
+    <div>
+      <details>
+        <summary>show product data</summary>
 
-    <details>
-      <summary>show product prices chart</summary>
-      <img src="data:image/png;base64, {{ plot }}" />
-    </details>
+        <div class="details-content">{{ data | safe }}</div>
+      </details>
 
-    <details>
-      <summary>show product summary</summary>
-      {{ summary | safe }}
-    </details>
+      <details>
+        <summary>show product prices chart</summary>
+        <div class="details-content">
+          <img src="data:image/png;base64, {{ plot }}" />
+        </div>
+      </details>
+
+      <details>
+        <summary>show product summary</summary>
+        <div class="details-content">{{ summary | safe }}</div>
+      </details>
+    </div>
   </body>
 </html>
